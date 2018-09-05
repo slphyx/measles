@@ -151,31 +151,33 @@ List measlesmod(double t, arma::vec y, List parms){
   arma::vec dV3S = -lambda%V3S-mort%V3S+aging*V3S+(1-eff3)*v3dose%(V1S+V2S+S)-w3*V3S;
   arma::vec dV3I = lambda%V3S-mort%V3I+aging*V3I-gamma*V3I+(1-eff3)*v3dose%(V1I+V2I+I)-w3*V3I;
   arma::vec dV3R = gamma*V3I-mort%V3R+aging*V3R+eff3*v3dose%(V1S+V1I+V2S+V2I+S+I)+v3dose%(V1R+V2R+R)-w3*V3R;
-  
-    
+
+
   arma::vec dnewcase = lambda%(S+V1S+V2S);
   dS[0] = dS[0]+newborn;
+
+ 
+  arma::vec outvec = dS;
+  outvec = arma::join_cols(outvec,dI);
+  outvec = arma::join_cols(outvec,dR);
+  
+  outvec = arma::join_cols(outvec,dV1S);
+  outvec = arma::join_cols(outvec,dV1I);
+  outvec = arma::join_cols(outvec,dV1R);
+  
+  outvec = arma::join_cols(outvec,dV2S);
+  outvec = arma::join_cols(outvec,dV2I);
+  outvec = arma::join_cols(outvec,dV2R);
+  
+  outvec = arma::join_cols(outvec,dV3S);
+  outvec = arma::join_cols(outvec,dV3I);
+  outvec = arma::join_cols(outvec,dV3R);
+  
+  outvec = arma::join_cols(outvec,dnewcase);
   
   List output(5);
-  arma::vec outvec = dS;
-  outvec.insert_rows(dI.size(),dI);
-  outvec.insert_rows(dR.size(),dR);
-  outvec.insert_rows(dV1S.size(),dV1S);
-  outvec.insert_rows(dV1I.size(),dV1I);
-  outvec.insert_rows(dV1R.size(),dV1R);
-  
-  outvec.insert_rows(dV2S.size(),dV2S);
-  outvec.insert_rows(dV2I.size(),dV2I);
-  outvec.insert_rows(dV2R.size(),dV2R);
-  
-  outvec.insert_rows(dV3S.size(),dV3S);
-  outvec.insert_rows(dV3I.size(),dV3I);
-  outvec.insert_rows(dV3R.size(),dV3R);
-  
-  outvec.insert_rows(dnewcase.size(),dnewcase);
-  
   //output[""] = NumericVector::create(dS,dI,dR,dV1S,dV1I,dV1R,dV2S,dV2I,dV2R,dV3S,dV3I,dV3R,dnewcase);
-  output[0] = Rcpp::NumericVector(outvec.begin(),outvec.end());
+  output[0] = NumericVector(outvec.begin(),outvec.end());
   output[1]=v1cov;
   output[2]=v2cov;
   output[3]=v3cov;
