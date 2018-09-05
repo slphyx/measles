@@ -168,9 +168,9 @@ List measlesmod(double t, arma::vec y, List parms){
   outvec.insert_rows(dV2I.size(),dV2I);
   outvec.insert_rows(dV2R.size(),dV2R);
   
-  outvec.insert_rows(dV3S.size(),dV2S);
-  outvec.insert_rows(dV3I.size(),dV2I);
-  outvec.insert_rows(dV3R.size(),dV2R);
+  outvec.insert_rows(dV3S.size(),dV3S);
+  outvec.insert_rows(dV3I.size(),dV3I);
+  outvec.insert_rows(dV3R.size(),dV3R);
   
   outvec.insert_rows(dnewcase.size(),dnewcase);
   
